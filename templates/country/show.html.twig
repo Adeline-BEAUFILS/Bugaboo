@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Pays #{{ country.id }}{% endblock %}
+
+{% block body %}
+
+<div class="media">
+  {#<img class="align-self-start mr-3" src="{{killer.image}}" alt="{{ killer.name }} image"#}
+  <div class="media-body">
+    <h1 class="mt-0">{{ country.name }}</h1>
+    <p>Tueurs : {{ killer.country.name }}</p>
+  </div>
+</div>
+
+<a href="{{ path('country_index') }}">
+    Retour à la liste des pays
+</a>
+
+{% endblock %}

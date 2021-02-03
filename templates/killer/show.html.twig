@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Tueur #{{ killer.id }}{% endblock %}
+
+{% block body %}
+
+<div class="media">
+  <img class="align-self-start mr-3" src="{{killer.image}}" alt="{{ killer.name }} image">
+  <div class="media-body">
+    <h1 class="mt-0">{{ killer.firstname }}<br>{{ killer.name }}</h1>
+    <p>Pays : {{ killer.country.name }}</p>
+  </div>
+</div>
+
+<a href="{{ path('killer_index') }}">
+    Retour à la liste des tueurs
+</a>
+
+{% endblock %}
