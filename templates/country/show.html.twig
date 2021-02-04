@@ -1,18 +1,23 @@
 {% extends 'base.html.twig' %}
-{% block title %}Pays #{{ country.id }}{% endblock %}
+{% block title %}{{ country.name }}{% endblock %}
 
 {% block body %}
 
-<div class="media">
-  {#<img class="align-self-start mr-3" src="{{killer.image}}" alt="{{ killer.name }} image"#}
-  <div class="media-body">
-    <h1 class="mt-0">{{ country.name }}</h1>
-    <p>Tueurs : {{ killer.country.name }}</p>
-  </div>
+<div class="container-card">
+        {% for killer in country.id %}
+            <div class="card">
+                <img style="height: 50vh;width : 100%; margin-top:7rem;" src="{{ killer.image }}" alt="Card image cap">
+                <div class="card-body">
+                    <h1 class="card-title">{{ killer.name }}</h1> <a class="more" href="{{ path('killer_show') }}">{{ 'Voir plus' | trans }}</a></br>
+                </div>
+            </div>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun tueur pour ce pays</td>
+            </tr>
+        {% endfor %}
 </div>
 
-<a href="{{ path('country_index') }}">
-    Retour à la liste des pays
-</a>
+<a href="{{ path('country_index') }}">Retour à la liste</a>
 
 {% endblock %}

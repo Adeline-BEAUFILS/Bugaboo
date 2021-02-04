@@ -19,22 +19,23 @@ class KillerRepository extends ServiceEntityRepository
         parent::__construct($registry, Killer::class);
     }
 
-    // /**
-    //  * @return Killer[] Returns an array of Killer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Killer[] Returns an array of Killer objects
+    */
+    public function findLikeName( string $name)
     {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
+        $queryBuilder = $this->createQueryBuilder('k')
+            ->Where('k.name LIKE :name')
+            ->join( 'k.aka', 'a')
+            ->orWhere( 'a.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
             ->orderBy('k.id', 'ASC')
             ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            ->getQuery();
+
+            return $queryBuilder->getResult();
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Killer

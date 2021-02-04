@@ -6,6 +6,8 @@ use App\Entity\Country;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\CountryType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/countries", name="country_")
@@ -32,19 +34,39 @@ class CountryController extends AbstractController
      * @Route("/show/{id<^[0-9]+$>}", name="show")
      * @return Response
      */
-    public function show(string $killerName): Response
+    public function show(int $id): Response
     {   
         $country = $this->getDoctrine()
         ->getRepository(Country::class)
-        ->findOneBy(['country' => $killerName]);
+        ->findOneBy(['id' => $id]);
 
     if (!$country) {
         throw $this->createNotFoundException(
-            'No killer with name : '.$killerName.' found in country table.'
+            'No country with id : '.$id.' found in countries table.'
         );
     }
     return $this->render('country/show.html.twig', [
-        'country' => $killerName,
+        'country' => $country,
     ]);
+    }
+
+    /**
+     * @Route("/new", name="new")
+     */
+    public function new(Request $request): Response
+    {   
+        $country = new Country();
+        $form = $this->createForm(CountryType::class, $country);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($country);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('country_index');
+        }
+        return $this->render('country/new.html.twig', [
+            "form" => $form->createView(),
+        ]);
     }
 }

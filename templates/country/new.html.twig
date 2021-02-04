@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{'Ajoute un pays' | trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{'Ajoute un pays' | trans }}</h1>
+    {{ include('country/_form.html.twig') }}
+    <a href="{{ path('country_index') }}">{{'Retour'| trans}}</a>
+{% endblock %}

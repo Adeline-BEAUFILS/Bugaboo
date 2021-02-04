@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('killer_delete', {'id': killer.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir weffacer cette fiche?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ killer.id) }}">
+    <button class="btn.btn-primary">{{'Supprimer' | trans}}</button>
+</form>

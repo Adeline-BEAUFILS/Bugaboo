@@ -6,6 +6,11 @@ use App\Entity\Killer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\KillerType;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\KillerRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\Service\Slugify;
 
 /**
  * @Route("/killers", name="killer_")
@@ -46,5 +51,63 @@ class KillerController extends AbstractController
     return $this->render('killer/show.html.twig', [
         'killer' => $killer,
     ]);
+    }
+
+    /**
+     * @Route("/new", name="new")
+     */
+    public function new(Request $request, Slugify $slugify): Response
+    {   
+        $killer = new Killer();
+        $form = $this->createForm(KillerType::class, $killer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $slug = $slugify->generate($killer->getName());
+            $killer->setSlug($slug);
+            $entityManager->persist($killer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('killer_index');
+        }
+        return $this->render('killer/new.html.twig', [
+            "form" => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit", name="killer_edit", methods={"GET","POST"})
+     * @ParamConverter("killer", class="App\Entity\Killer")
+     */
+    public function edit(Request $request, Killer $killer): Response
+    {   
+        $form = $this->createForm(KillerType::class, $killer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('killer_index');
+        }
+
+        return $this->render('killer/edit.html.twig', [
+            'killer' => $killer,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="killer_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Killer $killer): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$killer->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($killer);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('killer_index');
     }
 }

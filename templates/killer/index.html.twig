@@ -7,13 +7,14 @@
     {% for killer in killers %}
         <div>
             <h2>{{ loop.index }} / {{ killer.firstname }} {{ killer.name }} </h2>
-            <a href="{{ path("killer_show", { id: killer.id }) }}">Voir la fiche</a>
+            <h3><a href="{{ path("killer_show", { id: killer.id }) }}">Voir la fiche</a></h3>
         </div>
     {% else %}
         Aucun tueur trouvé.
     {% endfor %}
 
-    <a href="{{ path('app_index') }}">
-        Retour à l'accueil
-    </a>
+    <p><a href="{{ path('killer_new') }}">
+        {{'Ajouter un tueur' | trans}}
+    </a></p>
+
    {% endblock %}

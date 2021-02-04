@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'Modifier un tueur'| trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{'Modifier une fiche tueur'| trans}}</h1>
+
+
+    
+    {{ include('killer/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('killer_index') }}">{{'Retour' | trans}}</a>
+
+    {{ include('killer/_delete_form.html.twig') }}
+{% endblock %}  
