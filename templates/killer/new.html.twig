@@ -4,6 +4,8 @@
 
 {% block body %}
     <h1>{{'Ajoute un tueur en série' | trans }}</h1>
+
     {{ include('killer/_form.html.twig') }}
+    
     <a href="{{ path('killer_index') }}">{{'Retour'| trans}}</a>
 {% endblock %}

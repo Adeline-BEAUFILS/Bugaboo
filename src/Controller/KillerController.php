@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Killer;
+use App\Form\KillerType;
+use App\Repository\KillerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\KillerType;
-use Symfony\Component\HttpFoundation\Request;
-use App\Repository\KillerRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Service\Slugify;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @Route("/killers", name="killer_")
@@ -34,7 +35,7 @@ class KillerController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id<^[0-9]+$>}", name="show")
+     * @Route("/show/{id<^[0-9]+$>}", methods={"GET"}, name="show")
      * @return Response
      */
     public function show(int $id): Response
@@ -54,7 +55,7 @@ class KillerController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new")
+     * @Route("/new", methods={"GET","POST"}, name="new")
      */
     public function new(Request $request, Slugify $slugify): Response
     {   

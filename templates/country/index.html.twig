@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-   {% block title %}All countries{% endblock %}
+   {% block title %}Pays{% endblock %}
 
    {% block body %} 
          <h1>Tous les pays : </h1>
     {% for country in countries %}
         <div>
             <h2>{{ loop.index }} / {{ country.name }}</h2>
-            <h3><a href="{{ path("country_show", { id: country.id }) }}">Voir la liste des tueurs en série</a></h3>
+            {#<h3><a href="{{ path("country_show", { id: country.id }) }}">Voir la liste des tueurs en série</a></h3>#}
         </div>
     {% else %}
         Aucun pays trouvé.

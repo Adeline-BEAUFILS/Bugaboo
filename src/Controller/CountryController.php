@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Country;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Country;
+use App\Entity\Killer;
+use App\Repository\KillerRepository;
 use App\Form\CountryType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,27 +33,35 @@ class CountryController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id<^[0-9]+$>}", name="show")
+     * @Route("/show/{countryName}", methods={"GET"}, name="show")
      * @return Response
      */
-    public function show(int $id): Response
+    public function show(string $countryName): Response
     {   
         $country = $this->getDoctrine()
         ->getRepository(Country::class)
-        ->findOneBy(['id' => $id]);
+        ->findOneBy(['name' => $countryName]);
 
     if (!$country) {
         throw $this->createNotFoundException(
-            'No country with id : '.$id.' found in countries table.'
+            'No country with name : '.$countryName.' found in killers table.'
         );
     }
+        $killers = $this->getDoctrine()
+        ->getRepository(Killer::class)
+        ->findBy(
+        ['country'=> $country],
+        ['id' => 'DESC'],
+        10
+        );
+
     return $this->render('country/show.html.twig', [
-        'country' => $country,
+        'country' => $country, 'killers' => $killers
     ]);
     }
 
     /**
-     * @Route("/new", name="new")
+     * @Route("/new", methods={"GET","POST"}, name="new")
      */
     public function new(Request $request): Response
     {   

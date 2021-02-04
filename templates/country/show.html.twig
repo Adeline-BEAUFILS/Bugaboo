@@ -4,11 +4,15 @@
 {% block body %}
 
 <div class="container-card">
-        {% for killer in country.id %}
+        {% for killer in killers %}
+
             <div class="card">
                 <img style="height: 50vh;width : 100%; margin-top:7rem;" src="{{ killer.image }}" alt="Card image cap">
                 <div class="card-body">
                     <h1 class="card-title">{{ killer.name }}</h1> <a class="more" href="{{ path('killer_show') }}">{{ 'Voir plus' | trans }}</a></br>
+                    {% if is_granted("ROLE_ADMIN") %}
+                    <a href="{{ path('killer_edit', { 'slug': killer.slug} ) }}">{{ 'Éditer' | trans }}</a>
+                    {% endif %}
                 </div>
             </div>
         {% else %}
@@ -17,7 +21,5 @@
             </tr>
         {% endfor %}
 </div>
-
-<a href="{{ path('country_index') }}">Retour à la liste</a>
-
+<a href="{{ path('country_index') }}">Retour à la liste des pays</a>
 {% endblock %}
